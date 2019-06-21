@@ -1,22 +1,23 @@
 import React from 'react';
 import './App.css';
-import './MYtest.js'
-import './addbtn.js'
-import Addbtn from './addbtn'
-import Inputtext from './inputtext'
-import Todo from './MYtest'
+import AddItem from './addNewItem'
+import ItemList from './itemList'
+
+let data = [
+  {id:"1", text:"111"},
+  {id:"2", text:"222"},
+  {id:"3", text:"333"},
+  {id:"4", text:"444"}
+];
 
 function App() {
   return (
     <div className="wrapper">
       <div className="header" id='header'>
         <h1>TODOlist</h1>
-        <Inputtext/>
-        <Addbtn />
       </div>
-      <ul id="list">
-        <Todo/>
-      </ul>
+      <AddItem/>
+      <ItemList data={data}/>
     </div>
   );
 }
