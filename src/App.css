@@ -2,3 +2,6 @@
   text-align: center;
 }
 
+.done > p {
+  text-decoration: line-through;
+}

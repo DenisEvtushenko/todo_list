@@ -4,9 +4,9 @@ import AddItem from './Elems/addNewItem'
 import ItemList from './Elems/itemList'
 
 let data = [
-  {id:"1", text:"111"},
-  {id:"2", text:"222"},
-  {id:"3", text:"333"}
+  {id:"1", text:"111",status: false},
+  {id:"2", text:"222",status: true},
+  {id:"3", text:"333",status: false}
 ];
 class App extends React.Component {
   state = {
@@ -16,8 +16,8 @@ class App extends React.Component {
     data.push(array)
     const nextTodos = data
     this.setState({dataList:nextTodos})
-    console.log('addtodos2',nextTodos)
   }
+
 
   render(){
     return (
