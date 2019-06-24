@@ -24,11 +24,13 @@ class AddItem extends React.Component {
 
     onAddBtnClick =(e)=>{
         e.preventDefault();
+        let status = false
         let id = this.generateId();
         const {text} = this.state
         this.props.addTodos({
             id,
-            text
+            text,
+            status
         })
     }
 
@@ -38,7 +40,6 @@ class AddItem extends React.Component {
                     type='text'
                     size='10' 
                     id='textinp'
-                    defaultValue=''
                     value={this.state.imputValue}
                     onChange={(e) => this.change(e)}
                 />
