@@ -1,5 +1,16 @@
 import React from 'react';
 import '../App.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+ 
+toast.configure({
+    position: "bottom-right",
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+})
 
 class Item extends React.Component {
     state = {
@@ -12,6 +23,7 @@ class Item extends React.Component {
         e.preventDefault();
         const {id} = this.props.data
         this.props.delTodos(id)
+        toast.error('You delete todo')
     }
 
 
@@ -36,7 +48,6 @@ class Item extends React.Component {
     changeCheckbox = (e) => {
         const {id,text, status} = this.props.data
         this.props.doneTodos(id,text,status)
-
     }
 
     inputKeyUp = (e) => {
@@ -54,17 +65,25 @@ class Item extends React.Component {
                 if (editState) {
                     return (
                         <div
+                            className="input-group mb-3"
                             onKeyUp={this.inputKeyUp}>
                             <input   
                                 type='text'
                                 size='10'
+                                className='form-control'
+                                aria-describedby="button-addon"
                                 value={this.state.imputValue}
                                 placeholder={text}
                                 onChange={(e) => this.changeTextInput(e)}/>
-                            <button
-                                onClick={this.onSaveBtnClick}>
-                                Save
-                            </button>
+                            <div 
+                                class="input-group-append">
+                                <button
+                                    id="button-addon"
+                                    className="btn btn-success"
+                                    onClick={this.onSaveBtnClick}>
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     )
                 }
@@ -80,6 +99,7 @@ class Item extends React.Component {
                                 {text}
                         </p>
                         <button
+                            className='btn btn-danger'
                             id={id}
                             onClick={this.onDelBtnClick}>
                             Delete

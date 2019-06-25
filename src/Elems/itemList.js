@@ -1,5 +1,9 @@
 import React from 'react';
 import Item from './item';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+ 
+toast.configure()
 
 class ItemList extends React.Component {
     state = {
@@ -36,6 +40,7 @@ class ItemList extends React.Component {
             return item.status = true
         })
         this.setState({data:this.props.data})
+        toast.info('You marcked all as "done"')
     }
 
     onMarkAllUndoneBtnClick = () => {
@@ -43,16 +48,19 @@ class ItemList extends React.Component {
             return item.status = false
         })
         this.setState({data:this.props.data})
+        toast.info('You marcked all as "undone"')
     }
 
     onDeleteAllBtnClick = () => {
         let dataLength = this.props.data.length
         this.props.data.splice(0, dataLength)
         this.setState({data:this.props.data})
+        toast.error('You deleted all todos')
     }
     
     onDeleteAllDoneBtnClick = () => {
-        this.props.deleteAllDone()        
+        this.props.deleteAllDone()  
+        toast.warning('You deleted all "done" todos')      
     }
 
     render() {
@@ -102,41 +110,62 @@ class ItemList extends React.Component {
     }
         return ( 
             <div 
-                className='list'>
+                className='list list-group-item'>
                 {changeData()}
                     <button
+                        className='btn btn-outline-info'
                         onClick={this.onMarkAllDoneBtnClick}>
                         Mark all "done"</button>
                     <button
+                        className='btn btn-outline-info'
                         onClick={this.onMarkAllUndoneBtnClick}>
                         Mark all "undone"</button>    
+                    
+                    <div 
+                        class="btn-group" 
+                        role="group" 
+                        aria-label="Basic example">
+                        <button
+                            className="btn btn-outline-secondary"
+                            onClick={this.onAllListBtnClick}>
+                            All
+                        </button>
+                        <button
+                            className="btn btn-outline-secondary"
+                            onClick={this.onUndoneListBtnClick}>
+                            Undone
+                        </button>
+                        <button
+                            className="btn btn-outline-secondary"
+                            onClick={this.onDoneListBtnClick}>
+                            Done
+                        </button>
+                    </div>
                     <button
-                        onClick={this.onAllListBtnClick}>
-                        All</button>
-                    <button
-                        onClick={this.onUndoneListBtnClick}>
-                        Undone</button>
-                    <button
-                        onClick={this.onDoneListBtnClick}>
-                        Done</button>
-                    <button
+                        className="btn btn-outline-danger"
                         onClick={this.onDeleteAllBtnClick}>
                         Delete all</button>
                     <button
+                        className="btn btn-outline-warning"
                         onClick={this.onDeleteAllDoneBtnClick}>
                         Delete all "done"</button>
-                    <p>
+                    <div>
+                        <span 
+                        class="badge badge-secondary">
                         All todos:
                         {this.props.data.length}
-                    </p>
-                    <p>
+                        </span>
+                        <span 
+                        class="badge badge-secondary">
                         Done todos:
                         {this.props.data.filter(el => el.status === true).length}
-                    </p>
-                    <p>
+                        </span>
+                        <span 
+                        class="badge badge-secondary">
                         Undone todos:
                         {this.props.data.filter(el => el.status === false).length}
-                    </p>
+                        </span>                   
+                    </div>
             </div>
         )
     }
