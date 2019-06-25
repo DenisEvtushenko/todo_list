@@ -1,5 +1,9 @@
 import React from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
  
+toast.configure()
+
 class AddItem extends React.Component {
     state = {
           id: '',
@@ -31,6 +35,7 @@ class AddItem extends React.Component {
             text,
             status
         })
+        toast.success('Add new todo')
     }
 
     inputKeyUp = (e) => {
@@ -41,19 +46,25 @@ class AddItem extends React.Component {
 
     render(){
         return(<div
-                    onKeyUp={this.inputKeyUp}>
-                <input   
-                    type='text'
-                    size='10' 
-                    id='textinp'
-                    value={this.state.imputValue}
-                    onChange={(e) => this.change(e)}
-                    />
-                <button 
-                    className='add__btn'
-                    onClick={this.onAddBtnClick}>
-                    add
-                </button>
+                    onKeyUp={this.inputKeyUp}
+                    className="input-group mb-3">
+                    <input   
+                        className='form-control'
+                        aria-describedby="button-addon2"
+                        type='text'
+                        size='10' 
+                        id='textinp'
+                        value={this.state.imputValue}
+                        onChange={(e) => this.change(e)}/>
+                    <div 
+                        class="input-group-append">
+                        <button 
+                            className='btn btn-primary'
+                            id="button-addon2"
+                            onClick={this.onAddBtnClick}>
+                            add
+                        </button>
+                    </div>
             </div>
         )
     }

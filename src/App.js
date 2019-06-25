@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AddItem from './Elems/addNewItem'
 import ItemList from './Elems/itemList'
 
@@ -12,6 +14,7 @@ class App extends React.Component {
   state = {
     dataList: data 
 }
+
   addTodos =(array)=>{
     data.push(array)
     const nextTodos = data
@@ -27,7 +30,7 @@ class App extends React.Component {
   render(){
     return (
       <div className="wrapper">
-        <div className="header" id='header'>
+        <div className="jumbotron jumbotron-fluid" id='header'>
           <h1>TODOlist</h1>
         </div>
         <AddItem 
@@ -35,6 +38,16 @@ class App extends React.Component {
         <ItemList
             data={this.state.dataList}
             deleteAllDone={this.deleteAllDone}/>
+        <ToastContainer
+            position="bottom-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnVisibilityChange
+            draggable
+            pauseOnHover/>
       </div>
     );
   }
