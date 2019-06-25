@@ -23,7 +23,6 @@ class AddItem extends React.Component {
     }
 
     onAddBtnClick =(e)=>{
-        e.preventDefault();
         let status = false
         let id = this.generateId();
         const {text} = this.state
@@ -34,15 +33,22 @@ class AddItem extends React.Component {
         })
     }
 
+    inputKeyUp = (e) => {
+        if (e.key === 'Enter') {
+        return this.onAddBtnClick()
+        }
+    }
+
     render(){
-        return(<div>
+        return(<div
+                    onKeyUp={this.inputKeyUp}>
                 <input   
                     type='text'
                     size='10' 
                     id='textinp'
                     value={this.state.imputValue}
                     onChange={(e) => this.change(e)}
-                />
+                    />
                 <button 
                     className='add__btn'
                     onClick={this.onAddBtnClick}>
