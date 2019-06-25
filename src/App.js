@@ -18,6 +18,11 @@ class App extends React.Component {
     this.setState({dataList:nextTodos})
   }
 
+  deleteAllDone = () => {
+    let array = this.state.dataList.filter(el => el.status === false)
+    this.setState({dataList:array})
+  } 
+
 
   render(){
     return (
@@ -26,8 +31,10 @@ class App extends React.Component {
           <h1>TODOlist</h1>
         </div>
         <AddItem 
-          addTodos={this.addTodos}/>
-        <ItemList data={this.state.dataList}/>
+            addTodos={this.addTodos}/>
+        <ItemList
+            data={this.state.dataList}
+            deleteAllDone={this.deleteAllDone}/>
       </div>
     );
   }

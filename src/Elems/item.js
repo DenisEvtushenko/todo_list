@@ -5,8 +5,7 @@ class Item extends React.Component {
     state = {
         data: this.props.data,
         editStatus: false,
-        text: ''
-
+        text: '',
     }
 
     onDelBtnClick = (e) => {
@@ -15,29 +14,35 @@ class Item extends React.Component {
         this.props.delTodos(id)
     }
 
-    onDoneBtnClick = (e) => {
-        e.preventDefault();
-        const {id,text, status} = this.props.data
-        this.props.doneTodos(id,text,status)
-    }
 
-    onEditBtnClick = (e) => {
+    onDoubleClick = (e) => {
         e.preventDefault();
         this.setState({editStatus:true})
     }
 
     onSaveBtnClick = (e) => {
-        e.preventDefault();
         const {id,status} = this.props.data
         const {text} = this.state
         this.props.doneTodos(id,text,!status)
         this.setState({editStatus:false})
     }
 
-    change = (e) => {
+    changeTextInput = (e) => {
         e.preventDefault();
         let text = e.target.value;
         this.setState({text: text})
+    }
+
+    changeCheckbox = (e) => {
+        const {id,text, status} = this.props.data
+        this.props.doneTodos(id,text,status)
+
+    }
+
+    inputKeyUp = (e) => {
+        if (e.key === 'Enter') {
+        return this.onSaveBtnClick()
+        }
     }
 
     itemClass = (status) => status ? 'done' : 'undone';
@@ -48,13 +53,14 @@ class Item extends React.Component {
             const itemOrEdit = () => {
                 if (editState) {
                     return (
-                        <div>
+                        <div
+                            onKeyUp={this.inputKeyUp}>
                             <input   
                                 type='text'
                                 size='10'
                                 value={this.state.imputValue}
                                 placeholder={text}
-                                onChange={(e) => this.change(e)}/>
+                                onChange={(e) => this.changeTextInput(e)}/>
                             <button
                                 onClick={this.onSaveBtnClick}>
                                 Save
@@ -64,22 +70,19 @@ class Item extends React.Component {
                 }
                 return ( <div
                     className={this.itemClass(status)}
-                    id={id}>
-                        <p>{text}</p>
+                    id={id}
+                    onDoubleClick={this.onDoubleClick}>
+                        <p>
+                            <input 
+                                type="checkbox"
+                                checked={this.props.data.status}
+                                onChange={(e) => this.changeCheckbox(e)}/>
+                                {text}
+                        </p>
                         <button
                             id={id}
                             onClick={this.onDelBtnClick}>
                             Delete
-                        </button>
-                        <button
-                            id={id}
-                            onClick={this.onDoneBtnClick}>
-                            Mark as {this.itemClass(!status)}
-                        </button>
-                        <button
-                            id={id}
-                            onClick={this.onEditBtnClick}>
-                            Edit
                         </button>
                 </div>
                 )
@@ -89,4 +92,3 @@ class Item extends React.Component {
     }
 
 export default Item
-
