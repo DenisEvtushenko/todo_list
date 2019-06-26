@@ -18,45 +18,37 @@ class Item extends React.Component {
         editStatus: false,
         text: '',
     }
-
     onDelBtnClick = (e) => {
         e.preventDefault();
         const {id} = this.props.data
         this.props.delTodos(id)
         toast.error('You delete todo')
     }
-
-
     onDoubleClick = (e) => {
         e.preventDefault();
         this.setState({editStatus:true})
     }
-
     onSaveBtnClick = (e) => {
         const {id,status} = this.props.data
         const {text} = this.state
         this.props.doneTodos(id,text,!status)
         this.setState({editStatus:false})
     }
-
     changeTextInput = (e) => {
         e.preventDefault();
         let text = e.target.value;
         this.setState({text: text})
     }
-
     changeCheckbox = (e) => {
         const {id,text, status} = this.props.data
         this.props.doneTodos(id,text,status)
     }
-
     inputKeyUp = (e) => {
         if (e.key === 'Enter') {
         return this.onSaveBtnClick()
         }
     }
-
-    itemClass = (status) => status ? 'done' : 'undone';
+    itemClass = (status) => status ? 'item done list-group-item' : 'item undone list-group-item';
 
     render() {
             const {id,text,status} = this.props.data;
@@ -65,7 +57,7 @@ class Item extends React.Component {
                 if (editState) {
                     return (
                         <div
-                            className="input-group mb-3"
+                            className="item input-group mb-3"
                             onKeyUp={this.inputKeyUp}>
                             <input   
                                 type='text'
@@ -75,35 +67,37 @@ class Item extends React.Component {
                                 value={this.state.imputValue}
                                 placeholder={text}
                                 onChange={(e) => this.changeTextInput(e)}/>
-                            <div 
-                                class="input-group-append">
-                                <button
-                                    id="button-addon"
-                                    className="btn btn-success"
-                                    onClick={this.onSaveBtnClick}>
+                                <div 
+                                    class="input-group-append">
+                                    <button
+                                        id="button-addon"
+                                        className="btn btn-success"
+                                        onClick={this.onSaveBtnClick}>
                                     Save
-                                </button>
-                            </div>
+                                    </button>
+                                </div>
                         </div>
                     )
                 }
                 return ( <div
-                    className={this.itemClass(status)}
-                    id={id}
-                    onDoubleClick={this.onDoubleClick}>
-                        <p>
-                            <input 
-                                type="checkbox"
-                                checked={this.props.data.status}
-                                onChange={(e) => this.changeCheckbox(e)}/>
-                                {text}
-                        </p>
-                        <button
-                            className='btn btn-danger'
+                            className={this.itemClass(status)}
                             id={id}
-                            onClick={this.onDelBtnClick}>
+                            onDoubleClick={this.onDoubleClick}>
+                            <p>
+                                <input
+                                    className='check'
+                                    type="checkbox"
+                                    checked={this.props.data.status}
+                                    onChange={(e) => this.changeCheckbox(e)}/>
+                                {text}
+                            </p>
+
+                            <button
+                                className='delbtn btn btn-danger'
+                                id={id}
+                                onClick={this.onDelBtnClick}>
                             Delete
-                        </button>
+                            </button>
                 </div>
                 )
             }

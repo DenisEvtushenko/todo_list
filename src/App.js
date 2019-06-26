@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddItem from './Elems/addNewItem'
 import ItemList from './Elems/itemList'
@@ -13,25 +13,31 @@ let data = [
 class App extends React.Component {
   state = {
     dataList: data 
-}
-
+  }
   addTodos =(array)=>{
     data.push(array)
     const nextTodos = data
     this.setState({dataList:nextTodos})
   }
-
   deleteAllDone = () => {
     let array = this.state.dataList.filter(el => el.status === false)
     this.setState({dataList:array})
   } 
-
+  onDoubleClick = (e) => {
+    e.preventDefault();
+    toast('no Easter eggs')
+  }
 
   render(){
     return (
-      <div className="wrapper">
-        <div className="jumbotron jumbotron-fluid" id='header'>
-          <h1>TODOlist</h1>
+      <div 
+        className="wrapper">
+        <div
+          onDoubleClick={this.onDoubleClick} 
+          className="jumbotron jumbotron-fluid" id='header'>
+          <h1>
+            TODOlist
+          </h1>
         </div>
         <AddItem 
             addTodos={this.addTodos}/>

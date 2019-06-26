@@ -69,7 +69,7 @@ class ItemList extends React.Component {
             if (filterState === 'all') {
                 const itemsArray = this.props.data.map((item) => {
                 return (
-                    <Item 
+                    <Item
                         key={item.id}
                         id={item.id} 
                         data={item}
@@ -110,8 +110,11 @@ class ItemList extends React.Component {
     }
         return ( 
             <div 
-                className='list list-group-item'>
-                {changeData()}
+            className='list list-group list-group-flush'>
+                    <div
+                        className="btn-group" 
+                        role="group" 
+                        aria-label="Basic example">
                     <button
                         className='btn btn-outline-info'
                         onClick={this.onMarkAllDoneBtnClick}>
@@ -119,53 +122,41 @@ class ItemList extends React.Component {
                     <button
                         className='btn btn-outline-info'
                         onClick={this.onMarkAllUndoneBtnClick}>
-                        Mark all "undone"</button>    
+                        Mark all "undone"</button>  
+                    <button
+                        className="btn btn-outline-warning"
+                        onClick={this.onDeleteAllDoneBtnClick}>
+                        Delete all "done"</button>
+                    </div>
+
+                    {changeData()}                    
                     
                     <div 
-                        class="btn-group" 
+                        className="btn-group" 
                         role="group" 
                         aria-label="Basic example">
                         <button
                             className="btn btn-outline-secondary"
                             onClick={this.onAllListBtnClick}>
-                            All
+                            All ({this.props.data.length})
                         </button>
                         <button
                             className="btn btn-outline-secondary"
                             onClick={this.onUndoneListBtnClick}>
-                            Undone
+                            Undone ({this.props.data.filter(el => el.status === false).length})
                         </button>
                         <button
                             className="btn btn-outline-secondary"
                             onClick={this.onDoneListBtnClick}>
-                            Done
+                            Done ({this.props.data.filter(el => el.status === true).length})
                         </button>
                     </div>
                     <button
                         className="btn btn-outline-danger"
                         onClick={this.onDeleteAllBtnClick}>
                         Delete all</button>
-                    <button
-                        className="btn btn-outline-warning"
-                        onClick={this.onDeleteAllDoneBtnClick}>
-                        Delete all "done"</button>
-                    <div>
-                        <span 
-                        class="badge badge-secondary">
-                        All todos:
-                        {this.props.data.length}
-                        </span>
-                        <span 
-                        class="badge badge-secondary">
-                        Done todos:
-                        {this.props.data.filter(el => el.status === true).length}
-                        </span>
-                        <span 
-                        class="badge badge-secondary">
-                        Undone todos:
-                        {this.props.data.filter(el => el.status === false).length}
-                        </span>                   
-                    </div>
+                    
+                    
             </div>
         )
     }
