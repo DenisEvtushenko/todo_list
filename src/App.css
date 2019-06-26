@@ -1,6 +1,10 @@
 .App {
   text-align: center;
 }
+.wrapper {
+  width: 600px; 
+  margin: 0 auto
+}
 
 h1 { 
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -11,14 +15,62 @@ h1 {
   line-height: 26.4px; 
 } 
 
-p { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
-  font-size: 18px; 
-  font-style: normal; 
-  font-variant: normal; 
-  font-weight: 60; 
-  line-height: 20px; 
+p { 
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
+  font-size: 18px;
+  margin-bottom: 0px
 } 
 
 .done > p {
   text-decoration: line-through;
+
+}
+.list{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.item {
+    cursor: pointer;
+    padding: 12px 8px 12px 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: #eee;
+    font-size: 18px;
+    transition: 0.2s;
+    user-select: none;
+}
+.item:nth-child(odd) {
+  background: #f9f9f9;
+}
+.item:hover {
+  background: #ddd;
+}
+
+.jumbotron {
+  padding: 30px 40px;
+  margin-bottom: 0px;
+}
+
+.add_new_item{
+  margin-bottom: 0px
+}
+
+.item > p {
+    margin-right: auto;
+    margin-left: 10px
+} 
+
+.delbtn{
+  margin-left: 0;
+  margin-right: 5px
+}
+.check {
+  margin-right: 10px;
 }

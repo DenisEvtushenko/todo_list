@@ -35,7 +35,7 @@ class AddItem extends React.Component {
             text,
             status
         })
-        toast.success('Add new todo')
+        toast.info('Added new todo')
     }
 
     inputKeyUp = (e) => {
@@ -47,7 +47,7 @@ class AddItem extends React.Component {
     render(){
         return(<div
                     onKeyUp={this.inputKeyUp}
-                    className="input-group mb-3">
+                    className="add_new_item input-group mb-3">
                     <input   
                         className='form-control'
                         aria-describedby="button-addon2"
@@ -57,7 +57,7 @@ class AddItem extends React.Component {
                         value={this.state.imputValue}
                         onChange={(e) => this.change(e)}/>
                     <div 
-                        class="input-group-append">
+                        className="input-group-append">
                         <button 
                             className='btn btn-primary'
                             id="button-addon2"
