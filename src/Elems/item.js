@@ -93,10 +93,9 @@ class Item extends React.Component {
                             </p>
 
                             <button
-                                className='delbtn btn btn-danger'
+                                className='delbtn'
                                 id={id}
                                 onClick={this.onDelBtnClick}>
-                            Delete
                             </button>
                 </div>
                 )

@@ -21,7 +21,6 @@ class AddItem extends React.Component {
     }
 
     change = (e) => {
-        e.preventDefault();
         let text = e.target.value;
         this.setState({text: text})
     }
@@ -35,6 +34,7 @@ class AddItem extends React.Component {
             text,
             status
         })
+        this.setState({text:''})
         toast.info('Added new todo')
     }
 
@@ -52,14 +52,15 @@ class AddItem extends React.Component {
                         className='form-control'
                         aria-describedby="button-addon2"
                         type='text'
-                        size='10' 
                         id='textinp'
+                        placeholder='input...'
                         value={this.state.imputValue}
-                        onChange={(e) => this.change(e)}/>
+                        onChange={(e) => this.change(e)}
+                        autoFocus={true}/>
                     <div 
                         className="input-group-append">
                         <button 
-                            className='btn btn-primary'
+                            className='addBtn btn btn-light'
                             id="button-addon2"
                             onClick={this.onAddBtnClick}>
                             add

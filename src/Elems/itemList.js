@@ -112,23 +112,17 @@ class ItemList extends React.Component {
             <div 
             className='list list-group list-group-flush'>
                     <div
-                        className="btn-group" 
-                        role="group" 
-                        aria-label="Basic example">
+                        className='allDoneUndone'>
                     <button
-                        className='btn btn-outline-info'
+                        className='allDoneBtn'
                         onClick={this.onMarkAllDoneBtnClick}>
-                        Mark all "done"</button>
+                        ⋁</button>
                     <button
-                        className='btn btn-outline-info'
+                        className='allUndoneBtn'
                         onClick={this.onMarkAllUndoneBtnClick}>
-                        Mark all "undone"</button>  
-                    <button
-                        className="btn btn-outline-warning"
-                        onClick={this.onDeleteAllDoneBtnClick}>
-                        Delete all "done"</button>
+                        ⋀</button> 
                     </div>
-
+                                        
                     {changeData()}                    
                     
                     <div 
@@ -154,7 +148,14 @@ class ItemList extends React.Component {
                     <button
                         className="btn btn-outline-danger"
                         onClick={this.onDeleteAllBtnClick}>
-                        Delete all</button>
+                        Delete all
+                    </button>
+                     
+                    <button
+                        className="btn btn-outline-warning"
+                        onClick={this.onDeleteAllDoneBtnClick}>
+                        Delete all "done"
+                    </button>
                     
                     
             </div>
