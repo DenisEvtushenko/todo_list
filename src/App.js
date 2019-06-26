@@ -23,22 +23,17 @@ class App extends React.Component {
     let array = this.state.dataList.filter(el => el.status === false)
     this.setState({dataList:array})
   } 
-  onDoubleClick = (e) => {
-    e.preventDefault();
-    toast('no Easter eggs')
-  }
+
+  
+
 
   render(){
     return (
       <div 
         className="wrapper">
-        <div
-          onDoubleClick={this.onDoubleClick} 
-          className="jumbotron jumbotron-fluid" id='header'>
           <h1>
             TODOlist
           </h1>
-        </div>
         <AddItem 
             addTodos={this.addTodos}/>
         <ItemList
