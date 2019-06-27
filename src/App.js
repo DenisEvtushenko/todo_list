@@ -36,7 +36,7 @@ class App extends React.Component {
               <div
                 className='col'>
           <h1>
-            TODOlist
+            todos
           </h1>
           </div>
           <div

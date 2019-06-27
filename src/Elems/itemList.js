@@ -8,7 +8,8 @@ toast.configure()
 class ItemList extends React.Component {
     state = {
         data: this.props.data,
-        filterStatus:'all'
+        filterStatus:'all',
+        markAll:true
     }
 
     delTodos =(id)=>{
@@ -35,11 +36,18 @@ class ItemList extends React.Component {
         this.setState({filterStatus:'all'})
     }
 
+    onMarkAllBtnClick = () => {
+        if (this.state.markAll == true){
+           this.onMarkAllDoneBtnClick()
+        }
+        else this.onMarkAllUndoneBtnClick()
+    }
+
     onMarkAllDoneBtnClick = () => {
         this.props.data.map((item) => {
             return item.status = true
         })
-        this.setState({data:this.props.data})
+        this.setState({data:this.props.data,markAll:false})
         toast.info('You marcked all as "done"')
     }
 
@@ -47,7 +55,7 @@ class ItemList extends React.Component {
         this.props.data.map((item) => {
             return item.status = false
         })
-        this.setState({data:this.props.data})
+        this.setState({data:this.props.data,markAll:true})
         toast.info('You marcked all as "undone"')
     }
 
@@ -155,18 +163,17 @@ class ItemList extends React.Component {
                         className='allDoneUndone'>
                     <button
                         className='allDoneBtn'
-                        onClick={this.onMarkAllDoneBtnClick}>
-                        ⋁</button>
-                    <button
-                        className='allUndoneBtn'
-                        onClick={this.onMarkAllUndoneBtnClick}>
-                        ⋀</button> 
+                        onClick={this.onMarkAllBtnClick}>
+                        ⌄</button>
                     </div>
                                         
                     {changeData()}                    
                     
                     <div
                         className='buttons list-group-item'>
+                        <p 
+                    className='footerP'>
+                        All items: {this.props.data.length}</p>
                         <button
                             className="AUDBtn"
                             id={this.state.allChkd}
@@ -177,29 +184,24 @@ class ItemList extends React.Component {
                             className="AUDBtn"
                             id={this.state.undoneChkd}
                             onClick={this.onUndoneListBtnClick}>
-                            Undone 
+                            Active 
                         </button>
                         <button
                             className="AUDBtn"
                             id={this.state.doneChkd}
                             onClick={this.onDoneListBtnClick}>
-                            Done 
+                            Completed 
                         </button>
                         <button
                             className="AUDBtn"
+                            id='clearCompleted'
                             onClick={this.onDeleteAllDoneBtnClick}>
-                            Delete all "done"
-                        </button>
-                        <button
-                            className="AUDBtn"
-                            onClick={this.onDeleteAllBtnClick}>
-                            Delete all
-                        </button>                        
+                            Clear completed
+                        </button>                       
                     </div>
-
                     <div
-                    className='footer list-group-item'>                    
-                    <p className='footerP'>All items: {this.props.data.length}; {this.quantityDoneItems()}; {this.quantityUndoneItems()}</p>
+                        className='footer list-group-item'>                    
+                    
                     </div>  
             </div>
 

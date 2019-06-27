@@ -16,7 +16,7 @@ class Item extends React.Component {
     state = {
         data: this.props.data,
         editStatus: false,
-        text: '',
+        text: this.props.data.text,
     }
     onDelBtnClick = (e) => {
         e.preventDefault();
@@ -31,13 +31,16 @@ class Item extends React.Component {
     onSaveBtnClick = (e) => {
         const {id,status} = this.props.data
         const {text} = this.state
+        if (text == ''|| text.length > 32){
+            return;
+        }
         this.props.doneTodos(id,text,!status)
         this.setState({editStatus:false})
     }
     changeTextInput = (e) => {
-        e.preventDefault();
         let text = e.target.value;
         this.setState({text: text})
+        console.log(this.state.text)
     }
     changeCheckbox = (e) => {
         const {id,text, status} = this.props.data
@@ -62,13 +65,13 @@ class Item extends React.Component {
                             <input   
                                 type='text'
                                 size='10'
-                                className='form-control'
+                                className='form'
                                 aria-describedby="button-addon"
-                                value={this.state.imputValue}
-                                placeholder={text}
+                                value={this.state.text}
+                                autoFocus={true}
                                 onChange={(e) => this.changeTextInput(e)}/>
                                 <div 
-                                    class="input-group-append">
+                                    className="input-group-append">
                                     <button
                                         id="button-addon"
                                         className="savebtn btn btn-success"
