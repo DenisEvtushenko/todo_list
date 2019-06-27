@@ -30,15 +30,27 @@ class App extends React.Component {
   render(){
     return (
       <div 
-        className="wrapper">
+        className="wrapper container">
+          <div
+            className='row'>
+              <div
+                className='col'>
           <h1>
             TODOlist
           </h1>
+          </div>
+          <div
+            className='col'>
         <AddItem 
             addTodos={this.addTodos}/>
+            </div>
+            <div className="w-100"></div>
+            <div
+              className='col'>
         <ItemList
             data={this.state.dataList}
             deleteAllDone={this.deleteAllDone}/>
+            </div>
         <ToastContainer
             position="bottom-right"
             autoClose={3000}
@@ -49,6 +61,7 @@ class App extends React.Component {
             pauseOnVisibilityChange
             draggable
             pauseOnHover/>
+            </div>
       </div>
     );
   }

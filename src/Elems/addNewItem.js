@@ -47,7 +47,7 @@ class AddItem extends React.Component {
     render(){
         return(<div
                     onKeyUp={this.inputKeyUp}
-                    className="add_new_item input-group mb-3">
+                    className="add_new_item input-group ">
                     <input   
                         className='form-control'
                         aria-describedby="button-addon2"

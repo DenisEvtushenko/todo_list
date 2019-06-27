@@ -57,7 +57,7 @@ class Item extends React.Component {
                 if (editState) {
                     return (
                         <div
-                            className="item input-group mb-3"
+                            className="itemEdit input-group"
                             onKeyUp={this.inputKeyUp}>
                             <input   
                                 type='text'
@@ -71,7 +71,7 @@ class Item extends React.Component {
                                     class="input-group-append">
                                     <button
                                         id="button-addon"
-                                        className="btn btn-success"
+                                        className="savebtn btn btn-success"
                                         onClick={this.onSaveBtnClick}>
                                     Save
                                     </button>
