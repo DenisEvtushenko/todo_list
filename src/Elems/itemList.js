@@ -62,9 +62,49 @@ class ItemList extends React.Component {
         this.props.deleteAllDone()  
         toast.warning('You deleted all "done" todos')      
     }
+    quantityDoneItems = () => {
+        let itemsQuantity = this.props.data.filter(el => el.status === true).length;
+        if (itemsQuantity === 1) {
+            return itemsQuantity + ' ' + 'item done'
+        }
+        return itemsQuantity + ' ' + 'items done'
+    }
+
+    quantityUndoneItems = () => {
+        let itemsQuantity = this.props.data.filter(el => el.status === false).length;
+        if (itemsQuantity === 1) {
+            return itemsQuantity + " " + "item left"
+        }
+        return itemsQuantity + ' ' + 'items left'
+    }
+    
+    status_All_buttons = () => {
+        if (this.state.filterStatus == 'all'){
+            return ( 
+                this.state.allChkd = 'this',
+                this.state.doneChkd = '',
+                this.state.undoneChkd =''
+                )
+        }
+        else if (this.state.filterStatus == 'done') {
+            return (
+                this.state.allChkd = '',
+                this.state.doneChkd = 'this',
+                this.state.undoneChkd =''
+                )
+        }
+        else if (this.state.filterStatus == 'undone') {
+            return (
+                this.state.allChkd = '',
+                this.state.doneChkd = '',
+                this.state.undoneChkd ='this'
+            )
+        }
+    }
 
     render() {
         let  filterState = this.state.filterStatus
+        this.status_All_buttons()
         const changeData = () => {
             if (filterState === 'all') {
                 const itemsArray = this.props.data.map((item) => {
@@ -75,7 +115,7 @@ class ItemList extends React.Component {
                         data={item}
                         delTodos={this.delTodos}
                         doneTodos={this.doneTodos}/>
-                    )    
+                    )   
                 })
                 return itemsArray
             }
@@ -110,7 +150,7 @@ class ItemList extends React.Component {
     }
         return ( 
             <div 
-            className='list list-group list-group-flush'>
+            className='list list-group '>
                     <div
                         className='allDoneUndone'>
                     <button
@@ -125,40 +165,44 @@ class ItemList extends React.Component {
                                         
                     {changeData()}                    
                     
-                    <div 
-                        className="btn-group" 
-                        role="group" 
-                        aria-label="Basic example">
+                    <div
+                        className='buttons list-group-item'>
                         <button
-                            className="btn btn-outline-secondary"
+                            className="AUDBtn"
+                            id={this.state.allChkd}
                             onClick={this.onAllListBtnClick}>
-                            All ({this.props.data.length})
+                            All
                         </button>
                         <button
-                            className="btn btn-outline-secondary"
+                            className="AUDBtn"
+                            id={this.state.undoneChkd}
                             onClick={this.onUndoneListBtnClick}>
-                            Undone ({this.props.data.filter(el => el.status === false).length})
+                            Undone 
                         </button>
                         <button
-                            className="btn btn-outline-secondary"
+                            className="AUDBtn"
+                            id={this.state.doneChkd}
                             onClick={this.onDoneListBtnClick}>
-                            Done ({this.props.data.filter(el => el.status === true).length})
+                            Done 
                         </button>
+                        <button
+                            className="AUDBtn"
+                            onClick={this.onDeleteAllDoneBtnClick}>
+                            Delete all "done"
+                        </button>
+                        <button
+                            className="AUDBtn"
+                            onClick={this.onDeleteAllBtnClick}>
+                            Delete all
+                        </button>                        
                     </div>
-                    <button
-                        className="btn btn-outline-danger"
-                        onClick={this.onDeleteAllBtnClick}>
-                        Delete all
-                    </button>
-                     
-                    <button
-                        className="btn btn-outline-warning"
-                        onClick={this.onDeleteAllDoneBtnClick}>
-                        Delete all "done"
-                    </button>
-                    
-                    
+
+                    <div
+                    className='footer list-group-item'>                    
+                    <p className='footerP'>All items: {this.props.data.length}; {this.quantityDoneItems()}; {this.quantityUndoneItems()}</p>
+                    </div>  
             </div>
+
         )
     }
 }
