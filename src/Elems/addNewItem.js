@@ -29,11 +29,15 @@ class AddItem extends React.Component {
         let status = false
         let id = this.generateId();
         const {text} = this.state
+        if (text == ''|| text.length > 32){
+            return;
+        }
         this.props.addTodos({
             id,
             text,
             status
         })
+        this.setState({text: ''})
         toast.info('Added new todo')
     }
 
@@ -52,8 +56,8 @@ class AddItem extends React.Component {
                         aria-describedby="button-addon2"
                         type='text'
                         autoComplete="off"
-                        placeholder='input...'
-                        value={this.state.imputValue}
+                        placeholder='What needs be done?'
+                        value={this.state.text}
                         onChange={(e) => this.change(e)}
                         autoFocus={true}/>
                     <div 
