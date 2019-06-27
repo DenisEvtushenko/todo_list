@@ -134,11 +134,15 @@ p {
 .allDoneUndone{
   font-size: 20px;
   position: relative;
-  top: -65px;
+  top: -50px;
   left: 6px;
   display: flex;
   flex-direction: column;
   width: 20px;
   height: 0px;
   z-index: 7;
+}
+.savebtn{
+  width: 53px;
+  padding-left: 7px
 }
