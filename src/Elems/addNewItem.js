@@ -34,7 +34,6 @@ class AddItem extends React.Component {
             text,
             status
         })
-        this.setState({text:''})
         toast.info('Added new todo')
     }
 
@@ -49,10 +48,10 @@ class AddItem extends React.Component {
                     onKeyUp={this.inputKeyUp}
                     className="add_new_item input-group ">
                     <input   
-                        className='form-control'
+                        className='form'
                         aria-describedby="button-addon2"
                         type='text'
-                        id='textinp'
+                        autoComplete="off"
                         placeholder='input...'
                         value={this.state.imputValue}
                         onChange={(e) => this.change(e)}

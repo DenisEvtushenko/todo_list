@@ -83,14 +83,12 @@ class Item extends React.Component {
                             className={this.itemClass(status)}
                             id={id}
                             onDoubleClick={this.onDoubleClick}>
-                            <p>
                                 <input
                                     className='check'
                                     type="checkbox"
                                     checked={this.props.data.status}
                                     onChange={(e) => this.changeCheckbox(e)}/>
-                                {text}
-                            </p>
+                                <label>{text}</label>
 
                             <button
                                 className='delbtn'
