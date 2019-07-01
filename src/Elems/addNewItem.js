@@ -1,6 +1,7 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
  
 toast.configure()
 
@@ -25,7 +26,7 @@ class AddItem extends React.Component {
         this.setState({text: text})
     }
 
-    onAddBtnClick =(e)=>{
+    onAddBtnClick = () => {
         let status = false
         let id = this.generateId();
         const {text} = this.state
@@ -38,7 +39,6 @@ class AddItem extends React.Component {
             status
         })
         this.setState({text: ''})
-        toast.info('Added new todo')
     }
 
     inputKeyUp = (e) => {
@@ -47,7 +47,7 @@ class AddItem extends React.Component {
         }
     }
 
-    render(){
+    render () {
         return(<div
                     onKeyUp={this.inputKeyUp}
                     className="add_new_item input-group ">
