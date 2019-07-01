@@ -20,31 +20,31 @@ class Item extends React.Component {
     }
     onDelBtnClick = (e) => {
         e.preventDefault();
-        const {id} = this.props.data
-        this.props.delTodos(id)
-        toast.error('You delete todo')
+        const {id, _id} = this.props.data
+        this.props.delTodos(id, _id)
     }
     onDoubleClick = (e) => {
         e.preventDefault();
         this.setState({editStatus:true})
     }
-    onSaveBtnClick = (e) => {
-        const {id,status} = this.props.data
+    onSaveBtnClick = () => {
+        const {id, status, _id} = this.props.data
         const {text} = this.state
         if (text == ''|| text.length > 32){
             return;
         }
-        this.props.doneTodos(id,text,!status)
+        this.props.doneTodos(id, text, status, _id)
         this.setState({editStatus:false})
+        console.log('SAVEBTN', 'status=',status, 'NOTstatus=',!status)
     }
     changeTextInput = (e) => {
         let text = e.target.value;
         this.setState({text: text})
-        console.log(this.state.text)
     }
-    changeCheckbox = (e) => {
-        const {id,text, status} = this.props.data
-        this.props.doneTodos(id,text,status)
+    changeCheckbox = () => {
+        console.log('DONEBTN')
+        const {id,text, status, _id} = this.props.data
+        this.props.doneTodos(id,text,status, _id)
     }
     inputKeyUp = (e) => {
         if (e.key === 'Enter') {
@@ -53,6 +53,8 @@ class Item extends React.Component {
     }
     itemClass = (status) => status ? 'item done list-group-item' : 'item undone list-group-item';
 
+    
+            
     render() {
             const {id,text,status} = this.props.data;
             let editState = this.state.editStatus

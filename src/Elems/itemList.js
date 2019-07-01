@@ -2,27 +2,31 @@ import React from 'react';
 import Item from './item';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { catchClause } from '@babel/types';
  
 toast.configure()
 
 class ItemList extends React.Component {
     state = {
-        data: this.props.data,
         filterStatus:'all',
         markAll:true
     }
 
-    delTodos =(id)=>{
+    delTodos = async (id, _id) => {
         const itemIndex = this.props.data.findIndex(el => el.id === id);
-        this.props.data.splice(itemIndex, 1)
-        this.setState({data:this.props.data})
-    }
-
-    doneTodos = (id, text, status) => {
-        const itemIndex = this.props.data.findIndex(el => el.id === id);
-        this.props.data.splice(itemIndex, 1, {id:id, text:text, status:!status})
-        this.setState({data:this.props.data})
-    }
+        try {
+            const res = await axios.delete('http://localhost:1234/products/'+_id+'/delete');
+            if (res.status == 200){
+                this.props.data.splice(itemIndex, 1); 
+                toast.error('You delete todo');               
+            }; 
+        }
+        catch (err) {
+            console.log('@@@@@@@@@@err', err);
+        };
+        this.setState({data:this.props.data});
+    };
     
     onUndoneListBtnClick = () => {
         this.setState({filterStatus:'undone'})
@@ -111,6 +115,7 @@ class ItemList extends React.Component {
     }
 
     render() {
+        console.log('dete', this.props.data)
         let  filterState = this.state.filterStatus
         this.status_All_buttons()
         const changeData = () => {
@@ -122,7 +127,7 @@ class ItemList extends React.Component {
                         id={item.id} 
                         data={item}
                         delTodos={this.delTodos}
-                        doneTodos={this.doneTodos}/>
+                        doneTodos={this.props.doneTodos}/>
                     )   
                 })
                 return itemsArray
@@ -136,7 +141,7 @@ class ItemList extends React.Component {
                         id={item.id} 
                         data={item}
                         delTodos={this.delTodos}
-                        doneTodos={this.doneTodos}/>
+                        doneTodos={this.props.doneTodos}/>
                      )    
             });
             return undoneData
@@ -150,7 +155,7 @@ class ItemList extends React.Component {
                         id={item.id} 
                         data={item}
                         delTodos={this.delTodos}
-                        doneTodos={this.doneTodos}/>
+                        doneTodos={this.props.doneTodos}/>
                 )    
             });
             return doneData
