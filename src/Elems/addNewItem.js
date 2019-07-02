@@ -1,7 +1,6 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
  
 toast.configure()
 
@@ -19,33 +18,34 @@ class AddItem extends React.Component {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         };
         return result;
-    }
+    };
 
     change = (e) => {
         let text = e.target.value;
-        this.setState({text: text})
-    }
+        this.setState({text: text});
+    };
 
     onAddBtnClick = () => {
-        let status = false
-        let id = this.generateId();
-        const {text} = this.state
+        let status = false,
+            id = this.generateId();
+        const {text} = this.state;
+        text.trim();
         if (text == ''|| text.length > 32){
             return;
-        }
+        };
         this.props.addTodos({
             id,
             text,
             status
-        })
-        this.setState({text: ''})
-    }
+        });
+        this.setState({text: ''});
+    };
 
     inputKeyUp = (e) => {
         if (e.key === 'Enter') {
-        return this.onAddBtnClick()
-        }
-    }
+            return this.onAddBtnClick();
+        };
+    };
 
     render () {
         return(<div
@@ -70,9 +70,8 @@ class AddItem extends React.Component {
                         </button>
                     </div>
             </div>
-        )
-    }
-}
-
+        );
+    };
+};
 
 export default AddItem

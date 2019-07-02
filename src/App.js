@@ -5,9 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AddItem from './Elems/addNewItem';
 import ItemList from './Elems/itemList';
 import axios from 'axios';
-import { async } from 'q';
 
-// let data = [];
 
 class App extends React.Component {
   state = {
@@ -16,32 +14,34 @@ class App extends React.Component {
 
   addTodos = async (newItem) => {
     try {
-      const res = await axios.post ('http://localhost:1234/products/create',{
+      const res = await axios.post('http://localhost:1234/products/create',{
         id:newItem.id,
         text:newItem.text,
         status:newItem.status
       });
-     if (res.status == 200) {
-       console.log(res)
-      // dataList.push(newItem)
-      // const nextTodos = data
-      toast.info('Added new todo')
-      this.setState({dataList: [...this.state.dataList, res.data.result]});
-      console.log('afteraDD', this.state.dataList)
-     }
+      if (res.status == 200) {
+        toast.info('Added new todo');
+        this.setState({dataList: [...this.state.dataList, res.data.result]});
+      };
     }
     catch (err) {
-      console.log('@@@@@@@@@@err', err);
-    }
-  }
+    };
+  };
 
-  deleteAllDone = () => {
-    let array = this.state.dataList.filter(el => el.status === false)
-    this.setState({dataList:array})
-  }
+  deleteAllDone = async () => {
+    try {
+      const res = await axios.delete('http://localhost:1234/products/deleteAllDone')
+      if (res.status == 200) {
+        let array = this.state.dataList.filter(el => el.status === false);
+        this.setState({dataList:array});
+      }
+    }
+    catch (err) {
+    };
+  };
+
 
   componentDidMount () {
-    console.log('CDM')
     axios.get('http://localhost:1234/products')
     .then(res => {
       const data = res.data;
@@ -49,72 +49,85 @@ class App extends React.Component {
     });
   };
 
-  doneTodos = async (id, text, status, _id) => {
+  doneTodos = async (id, _id, status) => {
     try {
-        const res = await axios.put('http://localhost:1234/products/'+ _id +'/update',{
-            status:!status
+      const res = await axios.put('http://localhost:1234/products/'+ _id +'/done',{    
+        status:!status
         });
-        if (res.status == 200){
+        if (res.status == 200) {
             const filteredData = this.state.dataList.map((item) => {
               if (item.id === id) {
                 item.status = !item.status 
               } 
               return item
             })
-            console.log('SSSSSSSSSS', status)
             this.setState({dataList: filteredData});
-        }
+        };
     }
     catch (err) {
-        console.log('@@@@@@@@@@err', err);
     };
-    
 }
+  saveTodos = async (id, _id, text) => {
+    try {
+      const res = await axios.put('http://localhost:1234/products/'+ _id +'/update',{    
+        text:text
+        });
+        if (res.status == 200) {
+            const filteredData = this.state.dataList.map((item) => {
+              if (item.id === id) {
+                item.text = text
+              } 
+              return item
+            })
+            this.setState({dataList: filteredData});
+        };
+    }
+    catch (err) {
+    };
+  };
   
   render () {
-    console.log('RENDER', this.state.dataList)
     return (
       <div 
-      className="wrapper container">
+        className="wrapper container">
           <div
             className='row'>
               <div
                 className='col'>
-          <h1>
-            todos
-          </h1>
+                  <h1>
+                    todos
+                  </h1>
+              </div>
+              <div
+                className='col'>
+                  <AddItem 
+                      addTodos={this.addTodos}/>
+              </div>
+              <div 
+                  className="w-100">
+              </div>
+              <div
+                  className='col'>
+                    <ItemList
+                      data={this.state.dataList}
+                      deleteAllDone={this.deleteAllDone}
+                      doneTodos={this.doneTodos}
+                      saveTodos={this.saveTodos}/>
+              </div>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnVisibilityChange
+                draggable
+                pauseOnHover/>
           </div>
-          <div
-            className='col'>
-        <AddItem 
-            addTodos={this.addTodos}/>
-            </div>
-            <div className="w-100"></div>
-            <div
-              className='col'>
-        <ItemList
-            data={this.state.dataList}
-            deleteAllDone={this.deleteAllDone}
-            doneTodos={this.doneTodos}
-            />
-            </div>
-        <ToastContainer
-            position="bottom-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnVisibilityChange
-            draggable
-            pauseOnHover/>
-            </div>
       </div>
     );
-  }
-
-  
-}
-
+  };
+};
 
 export default App;
