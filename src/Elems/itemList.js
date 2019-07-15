@@ -1,203 +1,154 @@
+/* eslint-disable no-sequences */
 import React from 'react';
 import Item from './item';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
- 
+
 toast.configure()
 
 class ItemList extends React.Component {
   state = {
-      filterStatus:'all',
-      markAll:true,
-      allChkd: 'this',
-      doneChkd: '',
-      undoneChkd: '',
-  }
+    filterStatus: 'All',
+    ismarkAll: true,
+  };
 
-  delTodos = async (id, _id) => {
-      const itemIndex = this.props.data.findIndex(el => el.id === id);
-      try {
-          const res = await axios.delete('http://localhost:1234/products/'+_id+'/delete');
-          if (res.status === 200){
-              this.props.data.splice(itemIndex, 1); 
-              toast.error('You delete todo'); 
-          }; 
-      }
-      catch (err) {
+  handleDeleteTodos = async (id, _id) => {
+    const itemIndex = this.props.data.findIndex(el => el.id === id);
+    try {
+      const res = await axios.delete('http://localhost:1234/products/' + _id + '/delete');
+      if (res.status === 200) {
+        this.props.data.splice(itemIndex, 1);
+        toast.error('You delete todo');
       };
-      this.setState({data:this.props.data});
-  };
-  
-  onUndoneListBtnClick = () => {
-      this.setState({
-        filterStatus:'undone', 
-        allChkd: '', 
-        doneChkd: '', 
-        undoneChkd: 'this',
-      })
+    }
+    catch (err) {
+    };
+    this.setState({ data: this.props.data });
   };
 
-  onDoneListBtnClick = () => {
-      this.setState({
-        filterStatus:'done', 
-        allChkd: '', 
-        doneChkd: 'this', 
-        undoneChkd: ''
-      })
+  changeFilter = (e) => {
+    const { id } = e.target
+    this.setState({ filterStatus: id, })
   };
-  
-  onAllListBtnClick = () => {
-      this.setState({
-        filterStatus:'all', 
-        allChkd: 'this', 
-        doneChkd: '', 
-        undoneChkd: '',
-      })
+
+  setActive = (value) => {
+    return value === this.state.filterStatus ? ' active' : ''
   };
 
   onMarkAllBtnClick = () => {
-      if (this.state.markAll === true){
-          this.onMarkAllDoneBtnClick()
-      }
-      else this.onMarkAllUndoneBtnClick();
+    return this.state.ismarkAll ? this.onMarkAllDoneBtnClick() : this.onMarkAllUndoneBtnClick()
+  };
+
+  filterData = (filterState) => {
+    switch (filterState) {
+      case "All":
+        return this.props.data;
+      case "Active":
+        return this.props.data.filter(el => el.status === false);
+      case "Completed":
+        return this.props.data.filter(el => el.status === true);
+      default:
+        return this.props.data;
+    };
   };
 
   onMarkAllDoneBtnClick = async () => {
-      try {
-          const res = await axios.put('http://localhost:1234/products/change',{
-              status:true
-          });
-              if (res.status === 200){
-                  return this.props.data.map((item) => {
-                  return item.status = true;
-                  }),
-                  this.setState({data:this.props.data, markAll:false}),
-                  toast.info('You marcked all as "done"');
-              };
-          }
-          catch (err) {
-          };
+    try {
+      const res = await axios.put('http://localhost:1234/products/change', {
+        status: true
+      });
+      if (res.status === 200) {
+        return this.props.data.map((item) => {
+          return item.status = true
+        }),
+          this.setState({ data: this.props.data, ismarkAll: false }),
+          toast.info('You marcked all as "Completed"');
+      };
+    }
+    catch (err) {
+    };
   };
 
   onMarkAllUndoneBtnClick = async () => {
-      try {
-          const res = await axios.put('http://localhost:1234/products/change',{
-              status:false
-          })
-              if (res.status === 200){
-                  return this.props.data.map((item) => {
-                              return item.status = false
-                          }),
-                  this.setState({data:this.props.data, markAll:true}),
-                  toast.info('You marcked all as "undone"');
-              };
-      }
-      catch (err) {
+    try {
+      const res = await axios.put('http://localhost:1234/products/change', {
+        status: false
+      })
+      if (res.status === 200) {
+        return this.props.data.map((item) => {
+          return item.status = false
+        }),
+          this.setState({ data: this.props.data, ismarkAll: true }),
+          toast.info('You marcked all as "Active"');
       };
-  }
-  
+    }
+    catch (err) {
+    };
+  };
+
   onDeleteAllDoneBtnClick = () => {
-      this.props.deleteAllDone();
-      toast.warning('You deleted all "done" todos');
+    this.props.deletedAllDone();
+    toast.warning('You deleted all completed todos');
   };
 
   render() {
-      let  filterState = this.state.filterStatus;
+    let filterState = this.state.filterStatus;
+    const filteredArray = this.filterData(filterState);
+    const buttonsList = ["All", "Active", "Completed"];
 
-      const changeData = () => {
-          if (filterState === 'all') {
-              const itemsArray = this.props.data.map((item) => {
-              return (
-                  <Item
-                      key={item.id}
-                      id={item.id} 
-                      data={item}
-                      delTodos={this.delTodos}
-                      saveTodos={this.props.saveTodos}
-                      doneTodos={this.props.doneTodos}/>
-                  );   
-              });
-              return itemsArray;
-          }
-      else if (filterState === 'undone') {
-          const undoneArray = this.props.data.filter(el => el.status === false)
-          const undoneData = undoneArray.map((item) => {
-              return (
-                <Item 
-                      key={item.id}
-                      id={item.id} 
-                      data={item}
-                      delTodos={this.delTodos}
-                      saveTodos={this.props.saveTodos}
-                      doneTodos={this.props.doneTodos}/>
-                    );    
-          });
-          return undoneData;
-      }
-      else if (filterState === 'done') {
-          const doneArray = this.props.data.filter(el => el.status === true)
-          const doneData  = doneArray.map((item) => {
-              return (
-                  <Item 
-                      key={item.id}
-                      id={item.id} 
-                      data={item}
-                      delTodos={this.delTodos}
-                      saveTodos={this.props.saveTodos}
-                      doneTodos={this.props.doneTodos}/>
-              )    
-          });
-          return doneData;
-      };
-  };
-      return ( 
-          <div 
-          className='list list-group'>
-                  <div
-                      className='allDoneUndone'>
-                      <button
-                          className='allDoneBtn'
-                          onClick={this.onMarkAllBtnClick}>
-                          ⌄
-                      </button>
-                  </div>
-                  {changeData()}
-                  <div
-                      className='buttons list-group-item'>
-                          <p 
-                              className='footerP'>
-                              All items: {this.props.data.length}</p>
-                          <button
-                              className="AUDBtn"
-                              id={this.state.allChkd}
-                              onClick={this.onAllListBtnClick}>
-                              All
-                          </button>
-                          <button
-                              className="AUDBtn"
-                              id={this.state.undoneChkd}
-                              onClick={this.onUndoneListBtnClick}>
-                              Active 
-                          </button>
-                          <button
-                              className="AUDBtn"
-                              id={this.state.doneChkd}
-                              onClick={this.onDoneListBtnClick}>
-                              Completed 
-                          </button>
-                          <button
-                              className="AUDBtn"
-                              id='clearCompleted'
-                              onClick={this.onDeleteAllDoneBtnClick}>
-                              Clear completed
-                          </button>
-                  </div>
-                  <div
-                      className='footer list-group-item'>
-                  </div>  
-          </div>
-      );
+    return (
+      <div
+        className='list list-group'>
+        <div
+          className='allDoneUndone'>
+          <button
+            className='allDoneBtn'
+            onClick={this.onMarkAllBtnClick}
+          >
+            ⌄
+          </button>
+        </div>
+        {filteredArray.map(item => (
+          <Item
+            key={item.id}
+            id={item.id}
+            data={item}
+            handleDeleteTodos={this.handleDeleteTodos}
+            saveTodos={this.props.saveTodos}
+            doneTodos={this.props.doneTodos}
+          />
+        )
+        )}
+        <div className='buttons list-group-item'>
+          <p
+            className='footerP'>
+            All items: {this.props.data.length}
+          </p>
+          {buttonsList.map(key => (
+            <button
+              className={`filterButton${this.setActive(key)}`}
+              key={key}
+              id={key}
+              onClick={this.changeFilter}
+            >
+              {key}
+            </button>
+          )
+          )}
+          <button
+            className="filterButton"
+            id='clearCompleted'
+            onClick={this.onDeleteAllDoneBtnClick}
+          >
+            Clear completed
+          </button>
+        </div>
+        <div
+          className='footer list-group-item'>
+        </div>
+      </div>
+    );
   };
 };
 
