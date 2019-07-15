@@ -1,37 +1,37 @@
 import React from 'react';
 import './App.css';
-import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer, toast} from 'react-toastify';
 import AddItem from './Elems/addNewItem';
 import ItemList from './Elems/itemList';
 import axios from 'axios';
-
 
 class App extends React.Component {
   state = {
     dataList: [],
   };
 
-  addTodos = async (newItem) => {
+  addTodo = async (newItem) => {
     try {
       const res = await axios.post('http://localhost:1234/products/create',{
-        id:newItem.id,
-        text:newItem.text,
-        status:newItem.status
+        id: newItem.id,
+        text: newItem.text,
+        status: newItem.status
       });
-      if (res.status == 200) {
+      if (res.status === 200) {
         toast.info('Added new todo');
         this.setState({dataList: [...this.state.dataList, res.data.result]});
       };
     }
     catch (err) {
+      return;
     };
   };
 
   deleteAllDone = async () => {
     try {
       const res = await axios.delete('http://localhost:1234/products/deleteAllDone')
-      if (res.status == 200) {
+      if (res.status === 200) {
         let array = this.state.dataList.filter(el => el.status === false);
         this.setState({dataList:array});
       }
@@ -54,7 +54,7 @@ class App extends React.Component {
       const res = await axios.put('http://localhost:1234/products/'+ _id +'/done',{    
         status:!status
         });
-        if (res.status == 200) {
+        if (res.status === 200) {
             const filteredData = this.state.dataList.map((item) => {
               if (item.id === id) {
                 item.status = !item.status 
@@ -72,7 +72,7 @@ class App extends React.Component {
       const res = await axios.put('http://localhost:1234/products/'+ _id +'/update',{    
         text:text
         });
-        if (res.status == 200) {
+        if (res.status === 200) {
             const filteredData = this.state.dataList.map((item) => {
               if (item.id === id) {
                 item.text = text
@@ -101,7 +101,7 @@ class App extends React.Component {
               <div
                 className='col'>
                   <AddItem 
-                      addTodos={this.addTodos}/>
+                      addTodo={this.addTodo}/>
               </div>
               <div 
                   className="w-100">

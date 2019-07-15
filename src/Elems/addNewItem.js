@@ -30,10 +30,10 @@ class AddItem extends React.Component {
             id = this.generateId();
         const {text} = this.state;
         text.trim();
-        if (text == ''|| text.length > 32){
+        if (text === ''|| text.length > 32){
             return;
         };
-        this.props.addTodos({
+        this.props.addTodo({
             id,
             text,
             status

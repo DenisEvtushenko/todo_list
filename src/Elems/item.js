@@ -34,7 +34,7 @@ class Item extends React.Component {
         let {id, _id} = this.props.data;
         const {text} = this.state;
         text.trim();
-        if (text == ''|| text.length > 32){
+        if (text === ''|| text.length > 32){
             return;
         };
         this.props.saveTodos(id, _id, text);
